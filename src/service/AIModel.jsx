@@ -1,50 +1,13 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
+const genAI = new GoogleGenerativeAI(
+  import.meta.env.VITE_GOOGLE_GEMINI_AI_API_KEY
+);
 
-import {
-  GoogleGenAI,
-} from '@google/genai';
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
+});
 
-async function main() {
-  const ai = new GoogleGenAI({
-    apiKey: import.meta.env['VITE_GOOGLE_GEMINI_AI_API_KEY'],
-  });
-  const tools = [
-    {
-      googleSearch: {
-      }
-    },
-  ];
-  const config = {
-    thinkingConfig: {
-      thinkingLevel: ThinkingLevel.HIGH,
-    },
-    tools,
-  };
-  const model = 'gemini-3-flash-preview';
-  const contents = [
-    {
-      role: 'user',
-      parts: [
-        {
-          text: `INSERT_INPUT_HERE`,
-        },
-      ],
-    },
-  ];
-
-  const response = await ai.models.generateContentStream({
-    model,
-    config,
-    contents,
-  });
-  let fileIndex = 0;
-  for await (const chunk of response) {
-    if (chunk.text) {
-      console.log(chunk.text);
-    }
-  }
-}
-
-main();
-
-
+export const chatSession = model.startChat({
+  history: [],
+});

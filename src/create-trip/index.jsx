@@ -19,6 +19,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from '../service/firebaseConfig';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
+import { chatSession } from "../service/AIModel";
+import { useNavigate} from 'react-router-dom';
+
 function CreateTrip() {
   const [destination, setDestination] = useState('')
 const [places, setPlaces] = useState([]);
@@ -26,7 +29,7 @@ const [places, setPlaces] = useState([]);
 const [formData, setFormData] = useState({});
 const [openDialog, setOpenDialog] = useState(false);
 const[loading, setLoading] = useState(false);
-
+const navigate = useNavigate();
 const handleInputChange = (name, value) => {
 
 if(name == 'noOfdays'&&value>5) {
@@ -45,7 +48,9 @@ useEffect(() =>{
 },[formData])
 
 const login=useGoogleLogin({
-  onSuccess: (codeResp) => console.log(codeResp), 
+  onSuccess: (codeResp) => {console.log(codeResp)
+    GetUserProfile(codeResp);
+ } , 
   onError: (error) => console.log('Login Failed:', error)
 })
 
@@ -56,11 +61,7 @@ const OnGenerateTrip =async() => {
     return ;
   }
 
-  const chatSession = new chatSession({
-    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-    model: 'gpt-3.5-turbo'
-  });
-
+  
   const SaveAiTrip=async(TripData) =>{
     setLoading(true);
     const user = JSON.parse(localStorage.getItem('user'));
@@ -73,9 +74,15 @@ await setDoc(doc(db, "AiTrips", docId), {
   id:docId
 });
  setLoading(false);
+ navigate(`/view-trip/${docId}`);
   }
 
-  if(formData?.noOfDays>5&&!formData?.destination || !formData?.days || !formData.budget || !formData.traveler) {
+  if(
+    !formData?.destination ||
+    !formData?.noOfDays ||
+    !formData?.budget ||
+    !formData?.traveler
+  ){
     toast("Please fill all the details.")
     return;
   }
@@ -88,10 +95,19 @@ await setDoc(doc(db, "AiTrips", docId), {
   .replace ('{totalDays}', formData?.noOfDays)
 // console.log(FINAL_PROMPT);
 
-const result=await chatSession.sendMessage(FINAL_PROMPT);
-console.log(result?.response?.text())
-setLoading(false);
-SaveAiTrip(result?.response?.text());
+console.log(FINAL_PROMPT);
+console.log(formData);
+try {
+  const result = await chatSession.sendMessage(FINAL_PROMPT);
+  console.log(result?.response?.text());
+  SaveAiTrip(result?.response?.text());
+} catch (error) {
+  console.log(error);
+  toast("AI service is busy. Please try again in a few minutes.");
+} finally {
+  setLoading(false);
+}
+
 }
 
 const GetUserProfile = (tokenInfo) => {
@@ -155,8 +171,9 @@ const searchPlaces = async (value) => {
           className="p-2 cursor-pointer hover:bg-gray-100"
           onClick={() => {
             setDestination(place.display_name);
-            setPlaces([]);
-            console.log(place);
+            handleInputChange("destination", place.display_name);
+             setPlaces([]);
+             console.log(place);
           }}
         >
           {place.display_name}
@@ -168,8 +185,8 @@ const searchPlaces = async (value) => {
 <div>
    <h2 className='text-xl my-3 font-medium'>For how many days you are planning to travel?</h2> 
    <Input placeholder={'Ex-4'} type="number" 
-   onChange={(e) => handleInputChange('days', e.target.value)}
-   onV
+   onChange={(e) => handleInputChange('noOfDays', e.target.value)}
+   
    />
 </div>
      </div> 
