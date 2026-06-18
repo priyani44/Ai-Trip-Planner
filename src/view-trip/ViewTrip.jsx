@@ -22,13 +22,21 @@ const GetTripData = async () => {
 
   if (docSnap.exists()) {
     const data = docSnap.data();
+    let tripDataString = data.tripdata;
 
-    data.tripdata = JSON.parse(
-      data.tripdata
-        .replace("```json", "")
-        .replace("```", "")
-        .trim()
-    );
+// Find where JSON actually starts
+const jsonStart = tripDataString.indexOf("{");
+
+tripDataString = tripDataString
+  .substring(jsonStart)
+  .replace(/```json/g, "")
+  .replace(/```/g, "")
+  .trim();
+console.log("Before Parse:", tripDataString);
+data.tripdata = JSON.parse(tripDataString);
+console.log("Parsed Data:", data);
+console.log("tripdata:", data.tripdata);
+setTrips(data);
 
     console.log(data);
 
