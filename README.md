@@ -1,16 +1,71 @@
-# React + Vite
+# ✈️ AI Trip Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI Trip Planner is a smart travel planning web application that helps users create personalized travel itineraries in seconds.
 
-Currently, two official plugins are available:
+Simply enter your destination, trip duration, budget, and travel preferences, and the AI generates a complete travel plan including suggested hotels, attractions, and a day-wise itinerary.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌐 Live Demo
 
-## React Compiler
+🔗https://ai-trip-planner-cx5t.vercel.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+* 🔐 Google Authentication
+* 🤖 AI-powered trip generation
+* 📍 Destination search
+* 🏨 Hotel recommendations
+* 🗓️ Day-wise travel itinerary
+* 💰 Budget-based planning
+* 👨‍👩‍👧‍👦 Travel companion selection
+* ☁️ Firebase database integration
+* 📱 Responsive design
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* Vite
+* Tailwind CSS
+* Shadcn UI
+
+### Backend & Database
+
+* Firebase Firestore
+
+### AI Integration
+
+* Google Gemini API
+
+### Authentication
+
+* Google OAuth
+
+### Deployment
+
+* Vercel
+
+## 🚀 How It Works
+
+1. Sign in with Google.
+2. Enter your destination.
+3. Select trip duration.
+4. Choose your budget.
+5. Select who you're travelling with.
+6. Click "Generate Trip".
+7. Get an AI-generated travel plan instantly.
+
+
+## 🔧 Installation
+
+```bash
+git clone <repository-url>
+cd ai-trip-planner
+npm install
+npm run dev
+```
+
+## 👩‍💻 Developed By
+
+Priyani
+
