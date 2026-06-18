@@ -4,7 +4,7 @@ import { SelectBudgetOptions } from '@/constants/Options';
 import { SelectTravelsList } from '@/constants/Options';
 import {Button} from '@/components/ui/button';
 import { toast } from 'sonner';
-import { AI_PROMPT } from "../constants/options";
+import { AI_PROMPT } from "../constants/Options";
 import {
   Dialog,
   DialogContent,
